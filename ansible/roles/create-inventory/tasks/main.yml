@@ -47,15 +47,15 @@
   block:
   - name: BM/RWN - Set inventory variables
     set_fact:
-      controlplane0: "{{ ocpinventory.json.nodes[1].pm_addr }}"
-      controlplane1: "{{ ocpinventory.json.nodes[2].pm_addr }}"
-      controlplane2: "{{ ocpinventory.json.nodes[3].pm_addr }}"
-      controlplane0_network_mac: "{{ ocpinventory.json.nodes[1].mac[controlplane_network_interface_idx] }}"
-      controlplane1_network_mac: "{{ ocpinventory.json.nodes[2].mac[controlplane_network_interface_idx] }}"
-      controlplane2_network_mac: "{{ ocpinventory.json.nodes[3].mac[controlplane_network_interface_idx] }}"
-      controlplane0_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[1].pm_addr.split('.')[0]).split('-')[-1]] }}"
-      controlplane1_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[2].pm_addr.split('.')[0]).split('-')[-1]] }}"
-      controlplane2_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[3].pm_addr.split('.')[0]).split('-')[-1]] }}"
+      controlplane0: "{{ ocpinventory.json.nodes[controlplane0_index].pm_addr }}"
+      controlplane1: "{{ ocpinventory.json.nodes[controlplane1_index].pm_addr }}"
+      controlplane2: "{{ ocpinventory.json.nodes[controlplane2_index].pm_addr }}"
+      controlplane0_network_mac: "{{ ocpinventory.json.nodes[controlplane0_index].mac[controlplane_network_interface_idx] }}"
+      controlplane1_network_mac: "{{ ocpinventory.json.nodes[controlplane1_index].mac[controlplane_network_interface_idx] }}"
+      controlplane2_network_mac: "{{ ocpinventory.json.nodes[controlplane2_index].mac[controlplane_network_interface_idx] }}"
+      controlplane0_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[controlplane0_index].pm_addr.split('.')[0]).split('-')[-1]] }}"
+      controlplane1_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[controlplane1_index].pm_addr.split('.')[0]).split('-')[-1]] }}"
+      controlplane2_vendor: "{{ hw_vendor[(ocpinventory.json.nodes[controlplane1_index].pm_addr.split('.')[0]).split('-')[-1]] }}"
 
   - name: BM/RWN - Get controlplane0 lab mac address
     uri:
@@ -122,7 +122,7 @@
 
   - name: BM/RWN - Set ocpinventory hv nodes
     set_fact:
-      ocpinventory_hv_nodes: "{{ ocpinventory.json.nodes[max_nodes|int:] }}"
+      ocpinventory_hv_nodes: "{{ ocpinventory.json.nodes[39:63] }}"
 
 - name: BM - Get lab mac address
   uri:
@@ -257,10 +257,10 @@
     - (item.pm_addr.split('.')[0]).split('-')[-1] in ['6049p']
     loop: "{{ ocpinventory_hv_nodes }}"
     loop_control:
-      index_var: idx
+      index_var: id
 
 - name: Place inventory file named {{ lab_cloud }}.local into inventory directory
   template:
     src: "inventory-{{ cluster_type }}.j2"
-    dest: "{{ playbook_dir }}/inventory/{{ lab_cloud }}.local"
+    dest: "{{ playbook_dir }}/inventory/{{ lab_cloud }}-{{ cluster_name }}.local"
     backup: true

@@ -1,0 +1,119 @@
+---
+# Sample vars file
+################################################################################
+# Lab & cluster infrastructure vars
+################################################################################
+# Which lab to be deployed into (Ex scalelab)
+lab: scalelab
+# Which cloud in the lab environment (Ex cloud42)
+lab_cloud: cloud23
+
+# Either bm or rwn or sno
+cluster_type: bm
+
+# Applies to both bm/rwn clusters
+worker_node_count: 0
+
+# Applies to sno clusters
+sno_node_count:
+
+# Lab Network type, applies to sno cluster_type only
+# Set this variable if you want to host your SNO cluster on lab public routable
+# VLAN network, set this ONLY if you have public routable VLAN enabled in your
+# scalelab cloud
+public_vlan: false
+
+# Versions are controlled by this release image. If you want to change images
+# you must stop and rm all assisted-installer containers on the bastion and rerun
+# the setup-bastion step in order to setup your bastion's assisted-installer to
+# the version you specified
+ocp_release_image: quay.io/openshift-release-dev/ocp-release:4.12.16-x86_64
+
+# This should just match the above release image version (Ex: 4.12)
+openshift_version: "4.12"
+
+# Either "OVNKubernetes" or "OpenShiftSDN" (Only for BM/RWN cluster types)
+networktype: OVNKubernetes
+
+ssh_private_key_file: ~/.ssh/id_rsa
+ssh_public_key_file: ~/.ssh/id_rsa.pub
+# Place your pull_secret.txt in the base directory of the cloned jetlag repo, Example:
+# [user@fedora jetlag]$ ls pull_secret.txt
+pull_secret: "{{ lookup('file', '../pull_secret.txt') }}"
+
+################################################################################
+# Bastion node vars
+################################################################################
+bastion_cluster_config_dir: /root/{{ cluster_name }}
+
+smcipmitool_url:
+
+bastion_lab_interface: eno1np0
+bastion_controlplane_interface: ens1f0
+
+# vlaned interfaces are for remote worker node clusters only
+bastion_vlaned_interface: ens1f1
+
+# Used in conjunction with ACM/ZTP disconnected hub clusters (ipv6 only at the moment)
+setup_gogs: true
+
+# Use in conjunction with ipv6 based clusters
+use_disconnected_registry: false
+
+################################################################################
+# OCP node vars
+################################################################################
+# Network configuration for all bm cluster and rwn control-plane nodes
+controlplane_lab_interface: eno1np0
+
+# Network configuration for public VLAN based sno cluster_type deployment
+controlplane_pub_network_cidr:
+controlplane_pub_network_gateway:
+jumbo_mtu: false
+
+# Network only for remote worker nodes
+rwn_lab_interface: eno1np0
+rwn_network_interface: ens1f1
+
+################################################################################
+# Extra vars
+################################################################################
+# Append override vars below
+#Override for cluster name
+cluster_name: bm
+
+#Index value of the host to use. Refer to IP inventory sheet for index values. 
+controlplane0_index: 1
+controlplane1_index: 2
+controlplane2_index: 3
+
+#Bastion IP Address.  Shouldn't need to change this.
+bastion_controlplane_ip: "198.18.10.1"
+
+#IP Address for the control plane hosts.  Refer to the IP inventory sheet to find unused IPs.  Be sure to  quote values.
+controlplane0_ip: "198.18.10.5"
+controlplane1_ip: "198.18.10.6"
+controlplane2_ip: "198.18.10.7"
+
+#IP Addresses for the API and Ingress VIPs.  Refer to the IP inventory sheet to find unused IPs.  Be sure to  quote values.
+controlplane_network_api: "198.18.10.3"
+controlplane_network_ingress: "198.18.10.4"
+
+#Vars to set up operators post-install
+setup_openshift_gitops: true
+setup_openshift_gitops_ztp: true
+controlplane_localstorage_configuration: true
+setup_kube_burner_sa: false
+gitops_starting_csv: openshift-gitops-operator.v1.9.0
+gitops_channel: latest
+ztp_site_generator_image_tag: 4.12.0
+
+hv_inventory: true
+hv_ssh_pass: 100yard-
+hv_ip_offset: 18
+hv_vm_prefix: sno
+hypervisor_nic_interface_idx: 1
+
+controlplane_network: 198.18.10.0/8
+
+#ai_cluster_id: "0d059582-aadf-4dcb-bd10-a864c41dd1b4"

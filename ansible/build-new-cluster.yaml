@@ -1,0 +1,31 @@
+
+- name: Setup bastion machine for new cluster
+  hosts: bastion
+  vars_files:
+  - "vars/{{ cluster_name }}.yml"
+  - vars/lab.yml
+  roles:
+  - validate-vars
+  - role: bastion-dnsmasq
+    when: not setup_coredns
+
+- name: Creates a bare metal cluster with the assisted-installer
+  hosts: bastion
+  vars_files:
+  - "vars/{{ cluster_name }}.yml"
+  - vars/lab.yml
+  roles:
+  - validate-vars
+  - create-ai-cluster
+  - generate-discovery-iso
+  - role: boot-iso
+    vars:
+      inventory_group: controlplane
+      index: 3
+  - role: boot-iso
+    vars:
+      inventory_group: worker
+      index: "{{ worker_node_count }}"
+  - wait-hosts-discovered
+  - install-cluster
+  - bm-post-cluster-install

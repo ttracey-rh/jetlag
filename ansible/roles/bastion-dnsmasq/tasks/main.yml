@@ -7,7 +7,7 @@
     dest: "{{ item.dest }}"
   loop:
   - src: jetlag.conf.j2
-    dest: /etc/dnsmasq.d/jetlag.conf
+    dest: "/etc/dnsmasq.d/jetlag-{{ cluster_name }}.conf"
   - src: 99-jetlag-dns.conf
     dest: /etc/NetworkManager/conf.d/99-jetlag-dns.conf
   - src: resolv.conf.j2

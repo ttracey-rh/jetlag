@@ -10,7 +10,7 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-  - vars/all.yml
+  - "vars/{{ cluster_name }}.yml"
   - vars/lab.yml
   roles:
   - validate-vars

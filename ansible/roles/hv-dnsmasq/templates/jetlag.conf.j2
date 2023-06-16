@@ -20,24 +20,23 @@ address=/api.{{ vm }}.{{ base_dns_name }}/{{ hostvars[vm].ip }}
 address=/apps.{{ vm }}.{{ base_dns_name }}/{{ hostvars[vm].ip }}
 {% endfor %}
 
-{% if groups['hv_vm'] | length > 0 %}
-# Jumbo cluster DNS
-address=/jumbocluster00/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost(-2) }}
-address=/api.jumbocluster00.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost(-2) }}
-address=/apps.jumbocluster00.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost(-3) }}
-# Standard cluster DNS ({{ standard_cluster_dns_count }} Entries)
-{% for cluster in range(1, standard_cluster_dns_count + 1, 1)  %}
-address=/standard-{{ '%05d' | format(cluster) }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost(cluster * -2) }}
-address=/api.standard-{{ '%05d' | format(cluster) }}.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost(cluster * -2) }}
-address=/apps.standard-{{ '%05d' | format(cluster) }}.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost( (cluster * -2) - 1 ) }}
-{% endfor %}
-# Compact cluster DNS ({{ compact_cluster_dns_count }} Entries)
-{% for cluster in range(1, compact_cluster_dns_count + 1, 1)  %}
-address=/compact-{{ '%05d' | format(cluster) }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost((cluster + standard_cluster_dns_count) * -2) }}
-address=/api.compact-{{ '%05d' | format(cluster) }}.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost((cluster + standard_cluster_dns_count) * -2) }}
-address=/apps.compact-{{ '%05d' | format(cluster) }}.{{ base_dns_name }}/{{ hostvars[groups['hv_vm'][0]]['machine_network'] | ansible.utils.nthhost( ((cluster + standard_cluster_dns_count) * -2) - 1 ) }}
-{% endfor %}
-{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {% for item in groups['sno'] %}
 {% if hostvars[item].ip_address is defined %}

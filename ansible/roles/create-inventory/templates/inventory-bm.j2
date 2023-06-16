@@ -10,9 +10,9 @@ bmc_user={{ bmc_user }}
 bmc_password={{ bmc_password }}
 
 [controlplane]
-{{ controlplane0.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane0 }} network_mac={{ controlplane0_network_mac }} lab_mac={{ controlplane0_lab_mac }} ip={{ controlplane_network | ansible.utils.nthhost(5) }} vendor={{ controlplane0_vendor }} install_disk={{ control_plane_install_disk }}
-{{ controlplane1.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane1 }} network_mac={{ controlplane1_network_mac }} lab_mac={{ controlplane1_lab_mac }} ip={{ controlplane_network | ansible.utils.nthhost(6) }} vendor={{ controlplane1_vendor }} install_disk={{ control_plane_install_disk }}
-{{ controlplane2.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane2 }} network_mac={{ controlplane2_network_mac }} lab_mac={{ controlplane2_lab_mac }} ip={{ controlplane_network | ansible.utils.nthhost(7) }} vendor={{ controlplane2_vendor }} install_disk={{ control_plane_install_disk }}
+{{ controlplane0.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane0 }} network_mac={{ controlplane0_network_mac }} lab_mac={{ controlplane0_lab_mac }} ip={{ controlplane0_ip }} vendor={{ controlplane0_vendor }} install_disk={{ control_plane_install_disk }}
+{{ controlplane1.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane1 }} network_mac={{ controlplane1_network_mac }} lab_mac={{ controlplane1_lab_mac }} ip={{ controlplane1_ip }} vendor={{ controlplane1_vendor }} install_disk={{ control_plane_install_disk }}
+{{ controlplane2.split('.')[0] | replace('mgmt-','') }} bmc_address={{ controlplane2 }} network_mac={{ controlplane2_network_mac }} lab_mac={{ controlplane2_lab_mac }} ip={{ controlplane2_ip }} vendor={{ controlplane2_vendor }} install_disk={{ control_plane_install_disk }}
 
 [controlplane:vars]
 role=master
